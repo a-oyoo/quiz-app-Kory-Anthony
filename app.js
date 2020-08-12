@@ -78,7 +78,7 @@
 
 
 function generateStartPage() {
-  console.log("`renderQuestions` ran");
+  console.log("`generateStartPage` ran");
   $(main).html(
     `<div class = "generateStartPage">
     <h1>North London Derby Quiz</h1>
@@ -158,14 +158,22 @@ function SubmitAnswer(action){
 //function handleClickStartQuiz() {
 //  console.log("`handleSubmitQuestion` ran");
 
+function handleQuestionCounter() {
+  console.log("`generateQuestionCounter` ran");
+}
 function handleSubmitAnswer() {
   console.log("`handleSubmitQuestion` ran");
   alert("completed");
   generateQuestion();
 }
-/*function handleEndQuiz() {
+
+function handleFinalScore() {
+  console.log("`handleFinalScore` ran");
+
+}
+function handleEndQuiz() {
   console.log("`handleSubmitQuiz` ran");
-}*/
+}
 
 //event listeners
 
@@ -176,9 +184,16 @@ $('main').on('click','.startQuiz',function(){
 $('main').on('submit','.form',submitAnswer);
 
 
-//function main() {
-//  console.log("`main` rain")
-//  generateStartPage();
+function main() {
+  generateStartPage();
+  generateQuestion();
+  generateEndPage();
+  handleQuestionCounter();
+  handleSubmitAnswer();
+  handleFinalScore();
+  handleEndQuiz();
+  console.log('`main` ran');
+  //generateStartPage();
 }
 
 $(main);
