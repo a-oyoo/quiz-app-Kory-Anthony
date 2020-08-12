@@ -3,7 +3,7 @@
  */
  'use strict';
 
-const store = {
+/** const store = {
   // 5 or more questions are required
   questions: [
     {
@@ -31,6 +31,10 @@ const store = {
   questionNumber: 0,
   score: 0
 };
+
+*********************************************************************
+
+
 // User experience requirements:
 
 // user can click button to start quiz
@@ -45,9 +49,13 @@ const store = {
 // user able to start new quiz
 
 
+**********************************************************************
+
 /**
  * 
  * Technical requirements:
+ 
+ 
  * ******* Function stubs *******
  * 
  * Your app should include a render() function, that regenerates the view each time the store is updated. 
