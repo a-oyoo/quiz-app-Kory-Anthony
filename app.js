@@ -80,10 +80,11 @@
 function generateStartPage() {
   console.log("`renderQuestions` ran");
   $(main).html(
-    `
+    `<div class = "generateStartPage">
     <h1>North London Derby Quiz</h1>
       <img src="images/arsenal-fc.jpeg" alt="Arsenal" width="150" />
       <img src="images/tottenham-fc.jpg" alt="Tottenham" width="" />
+      </div>
       <div>
         <p>
           Welcome to the rivalry that is Aresnal FC vs Tottenham FC!! Test your
@@ -94,7 +95,7 @@ function generateStartPage() {
         <button id="start-quiz">Start Quiz</button>
       </div>
       `
-  )
+  );
 }
 
 function generateQuestion() {
@@ -117,6 +118,31 @@ function generateQuestion() {
 }
 function generateEndPage() {
   console.log("`generateEndPage` ran")
+  $('main').html(`<div class = "generateStartPage">
+  <h3>Thanks for taking the North London Derby Quiz</h3>
+  <p>Your final score was ${STORE.score}!</p>
+  <button class="restart">Try Again</button>
+  </div>`)
+}
+
+function SubmitAnswer(action){
+  action.preventDefault();
+  let answer =$("input[name=answers]:checked").val();
+  if(STORE.questions[STORE.currentQuestion].correctAnswer == answer){
+    alert("you are right!");
+    let correctDiv =$(`<div class="correct">You are correct!</div>`);
+    STORE.score++
+  }else{
+    let wrongDiv =$(`<div class="wrong">You are wrong!</div>`);
+    alert("You are wrong!")
+  }
+  STORE.currentQuestion++;
+  if(STORE.currentQuestion === STORE.questions.length){
+    alert("Quiz over!");
+    endQuizPage();
+  }else{
+    generateQuestion();
+  }
 }
 
 
@@ -134,13 +160,20 @@ function generateEndPage() {
 
 function handleSubmitAnswer() {
   console.log("`handleSubmitQuestion` ran");
+  alert("completed");
+  generateQuestion();
 }
-function handleEndQuiz() {
+/*function handleEndQuiz() {
   console.log("`handleSubmitQuiz` ran");
-}
+}*/
 
 //event listeners
 
+$('main').on('click','.startQuiz',function(){
+  renderList();
+});
+
+$('main').on('submit','.form',submitAnswer);
 
 
 //function main() {
