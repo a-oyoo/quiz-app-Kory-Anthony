@@ -80,20 +80,22 @@
 function generateStartPage() {
   console.log("`generateStartPage` ran");
   $(main).html(
-    `<div class = "generateStartPage">
-    <h1>North London Derby Quiz</h1>
-      <img src="images/arsenal-fc.jpeg" alt="Arsenal" width="150" />
-      <img src="images/tottenham-fc.jpg" alt="Tottenham" width="" />
-      </div>
-      <div>
-        <p>
-          Welcome to the rivalry that is Aresnal FC vs Tottenham FC!! Test your
-          knowledge of the oldest derby in the World!!!
-        </p>
-      </div>
-      <div>
-        <button id="start-quiz">Start Quiz</button>
-      </div>
+    `<section id="startPage">
+      <div class = "generateStartPage">
+      <h1>North London Derby Quiz</h1>
+        <img src="images/arsenal-fc.jpeg" alt="Arsenal" width="150" />
+        <img src="images/tottenham-fc.jpg" alt="Tottenham" width="" />
+        </div>
+        <div>
+          <p>
+            Welcome to the rivalry that is Aresnal FC vs Tottenham FC!! Test your
+            knowledge of the oldest derby in the World!!!
+          </p>
+        </div>
+        <div>
+          <button id="start-quiz">Start Quiz</button>
+        </div>
+      </section>
       `
   );
 }
@@ -102,19 +104,31 @@ function generateQuestion() {
   console.log("`generateQuestion` ran")
   let question = STORE.questions[STORE.currentQuestion];
 
-  $("main").html(`
-    <div class ="data">
-    <div class="question">${questions.question}</div>
-    <form class="form">
-      <input type="radio" id="true" name="answers" value="${questions.question[0]}">
-      <label for="true">${questions.question[0]}</label><br>
-      <input type="radio" id="false" name="answers" value="${questions.question[1]}">
-      <label for="false">${questions.question[1]}</label><br>
-      <button type="submit" id="submit">Submit</button>
-    </form>
-  </div>
-  `
+  $("main").html(
+    `<section id="quiz">
+      <h2></h2>
+      <form>
+        <fieldset id="choices"></fieldset>
+        <input type="submit" value="Submit Answer" aria-label="Submit Answer" />
+      </form>
+    </section>
+    `
   );
+
+  /*$("main").html(
+    `
+      <div class ="data">
+      <div class="question">${questions.question}</div>
+      <form class="form">
+        <input type="radio" id="true" name="answers" value="${questions.question[0]}">
+        <label for="true">${questions.question[0]}</label><br>
+        <input type="radio" id="false" name="answers" value="${questions.question[1]}">
+        <label for="false">${questions.question[1]}</label><br>
+        <button type="submit" id="submit">Submit</button>
+      </form>
+    </div>
+  `
+  );*/
 }
 function generateEndPage() {
   console.log("`generateEndPage` ran")
@@ -123,26 +137,41 @@ function generateEndPage() {
   <p>Your final score was ${STORE.score}!</p>
   <button class="restart">Try Again</button>
   </div>`)
+
+  /*<section id="summary">
+  <h2>Summary</h2>
+  <p></p>
+  <button id="restart">Restart Quiz</button>
+</section>*/
+
 }
 
-function SubmitAnswer(action){
+function SubmitAnswer(action) {
   action.preventDefault();
-  let answer =$("input[name=answers]:checked").val();
-  if(STORE.questions[STORE.currentQuestion].correctAnswer == answer){
+  let answer = $("input[name=answers]:checked").val();
+  if (STORE.questions[STORE.currentQuestion].correctAnswer == answer) {
     alert("you are right!");
-    let correctDiv =$(`<div class="correct">You are correct!</div>`);
+    let correctDiv = $(`<div class="correct">You are correct!</div>`);
     STORE.score++
-  }else{
-    let wrongDiv =$(`<div class="wrong">You are wrong!</div>`);
+  } else {
+    let wrongDiv = $(`<div class="wrong">You are wrong!</div>`);
     alert("You are wrong!")
   }
   STORE.currentQuestion++;
-  if(STORE.currentQuestion === STORE.questions.length){
+  if (STORE.currentQuestion === STORE.questions.length) {
     alert("Quiz over!");
     endQuizPage();
-  }else{
+  } else {
     generateQuestion();
   }
+
+  /* <section id="feedback">
+  <h2></h2>
+  <p class="user-answer"></p>
+  <p class="correct-answer"></p>
+  <button id="next">Next Question</button>
+</section> */
+
 }
 
 
@@ -163,8 +192,8 @@ function handleQuestionCounter() {
 }
 function handleSubmitAnswer() {
   console.log("`handleSubmitQuestion` ran");
-  alert("completed");
-  generateQuestion();
+  /*alert("completed");
+  generateQuestion();*/
 }
 
 function handleFinalScore() {
@@ -177,11 +206,11 @@ function handleEndQuiz() {
 
 //event listeners
 
-$('main').on('click','.startQuiz',function(){
+$('main').on('click', '.startQuiz', function () {
   renderList();
 });
 
-$('main').on('submit','.form',submitAnswer);
+$('main').on('submit', '.form', handleSubmitAnswer);
 
 
 function main() {
