@@ -77,7 +77,7 @@
 const STORE = {
   questions: [
     {
-      question: "what is Arsenal FC's nickname?",
+      question: "What is Arsenal FC's nickname?",
       answers: ["The Shooters", "The Hammers", "The Gunners", "The Reds"],
       correct: 2,
     },
@@ -116,9 +116,9 @@ const STORE = {
   ],
   score: 0,
   currentQuestion: 0,
-  guess: 0,
+  selection: 0,
   started: false,
-  hasFeedback: false,
+  giveFeedback: false,
 };
 
 function render() {
@@ -130,18 +130,18 @@ function render() {
 
   if (!STORE.started) {
     $("#start").show();
-  } else if (STORE.hasFeedback) {
-    renderHeader();
-    renderFeedback();
+  } else if (STORE.giveFeedback) {
+    headerFunc();
+    response();
   } else if (STORE.currentQuestion < STORE.questions.length) {
-    renderHeader();
-    renderQuestion();
+    headerFunc();
+    question();
   } else {
-    renderSummary();
+    finalPage();
   }
 }
 
-function renderHeader() {
+function headerFunc() {
   $("header").show();
   $("header .score").text(`Score: ${STORE.score}`);
   $("header .progress").text(
@@ -149,7 +149,7 @@ function renderHeader() {
   );
 }
 
-function renderQuestion() {
+function question() {
   $("#quiz").show();
   const question = STORE.questions[STORE.currentQuestion];
   $("#quiz h2").text(question.question);
@@ -162,20 +162,20 @@ function renderQuestion() {
   });
 }
 
-function renderFeedback() {
+function response() {
   $("#feedback").show();
-  $("#feedback h2").text(STORE.hasFeedback);
+  $("#feedback h2").text(STORE.giveFeedback);
   $(".user-answer").text("");
   const question = STORE.questions[STORE.currentQuestion];
-  if (STORE.hasFeedback === "Incorrect") {
-    $(".user-answer").text(`You answered ${STORE.guess}`);
+  if (STORE.giveFeedback === "Incorrect") {
+    $(".user-answer").text(`You answered ${STORE.selection}`);
   }
   $(".correct-answer").text(
     `The correct answer was ${question.answers[question.correct]}`
   );
 }
 
-function renderSummary() {
+function finalPage() {
   $("#summary").show();
   $("#summary p").text(
     `You scored ${STORE.score} out of ${STORE.questions.length}`
@@ -189,17 +189,17 @@ function startQuiz() {
   });
 }
 
-function submitChoice() {
+function submitResponse() {
   $("#quiz form").submit((e) => {
     e.preventDefault();
     const answer = $('input[type="radio"]:checked').val();
     const question = STORE.questions[STORE.currentQuestion];
     if (Number(answer) === question.correct) {
       STORE.score++;
-      STORE.hasFeedback = "Correct";
+      STORE.giveFeedback = "Correct";
     } else {
-      STORE.guess = STORE.questions[STORE.currentQuestion].answers[answer];
-      STORE.hasFeedback = "Incorrect";
+      STORE.selection = STORE.questions[STORE.currentQuestion].answers[answer];
+      STORE.giveFeedback = "Incorrect";
     }
     render();
   });
@@ -207,13 +207,13 @@ function submitChoice() {
 
 function nextQuestion() {
   $("#next").click((e) => {
-    STORE.hasFeedback = false;
+    STORE.giveFeedback = false;
     STORE.currentQuestion = STORE.currentQuestion + 1;
     render();
   });
 }
 
-function restartQuiz() {
+function restart() {
   $("#restart").click((e) => {
     STORE.started = false;
     STORE.score = 0;
@@ -224,9 +224,9 @@ function restartQuiz() {
 
 function main() {
   startQuiz();
-  submitChoice();
+  submitResponse();
   nextQuestion();
-  restartQuiz();
+  restart();
   render();
 }
 
