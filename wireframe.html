@@ -16,11 +16,12 @@
     <header></header>
     <section id="startScreen">
       <h1>North London Derby Quiz</h1>
+      <h1>Start Screen</h1>
       <img src="images/arsenal-fc.jpeg" alt="Arsenal" width="150" />
       <img src="images/tottenham-fc.jpg" alt="Tottenham" width="" />
       <div>
         <p>
-          Welcome to the rivalry that is Aresnal FC vs Tottenham FC!! Test your
+          Welcome to the rivalry that is Arsenal FC vs Tottenham FC!! Test your
           knowledge of the oldest derby in the World!!!
         </p>
       </div>
@@ -29,9 +30,20 @@
       </div>
     </section>
 
-    <section id=""></section>
 
-    <section id=""></section>
+    <section id="questions">
+      <h2>Quiz Questions</h2>
+      <div class="questionBox">
+        <div class="question">${question.name}</div>
+        <form class="form">
+          <input type="radio" id="true" name="answers" value="answer">
+          <label for="true">Answer</label><br>
+          <input type="radio" id="false" name="answers" value="answer">
+          <label for="false">Answer</label><br>
+          <button type="submit" id="submit">Submit</button>
+        </form>    
+      </div>
+    </section>
 
     <script
       src="https://code.jquery.com/jquery-3.4.1.slim.js"
