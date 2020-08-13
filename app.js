@@ -1,7 +1,7 @@
 /**
  * Example store structure
  */
-'use strict';
+"use strict";
 
 /** const store = {
   // 5 or more questions are required
@@ -68,161 +68,166 @@
  * 
  */
 
-
 /* ******* Function stubs *******/
 
 /********** TEMPLATE GENERATION FUNCTIONS **********/
 
-
 // These functions return HTML templates
 
+const STORE = {
+  questions: [
+    {
+      question: "what is Arsenal FC's nickname?",
+      answers: ["The Shooters", "The Hammers", "The Gunners", "The Reds"],
+      correct: 2,
+    },
+    {
+      question: "What is Tottenham FC's nickname?",
+      answers: ["The LillyWhites", "The Cockerels", "The Saints", "The Spurs"],
+      correct: 3,
+    },
+    {
+      question: "How many times has the North London Derby been played?",
+      answers: [100, 50, 200, 220],
+      correct: 2,
+    },
+    {
+      question:
+        "Which one of these players has scored for both clubs in the derby?",
+      answers: [
+        "Thierry Henry",
+        "William Gallas",
+        "Emmanuel Adebayor",
+        "Sol Campbell",
+      ],
+      correct: 2,
+    },
+    {
+      question:
+        "St. Totteringham Day, a stable of Arsenal folklore has been cancelled the last 3 seasons. Which one of these best describes what it is?",
+      answers: [
+        "The day when Arsenal fans celebrate the fact that Tottenham can no longer catch Arsenal in the League. It is a movable feast, but usually falls in March, April or May. It was the day to collect on bets made by over-optimistic Spurs fans in the close season who think that 'this is the year'",
+        "The day Tottenham first won the league",
+        "The day Arsenal finished the league campaign with an unbeaten record",
+        "The day the Queen of England knighted Tottenham's mascot.",
+      ],
+      correct: 0,
+    },
+  ],
+  score: 0,
+  currentQuestion: 0,
+  guess: 0,
+  started: false,
+  hasFeedback: false,
+};
 
-function generateStartPage() {
-  console.log("`generateStartPage` ran");
-  $(main).html(
-    `<section id="startPage">
-      <div class = "generateStartPage">
-      <h1>North London Derby Quiz</h1>
-        <img src="images/arsenal-fc.jpeg" alt="Arsenal" width="150" />
-        <img src="images/tottenham-fc.jpg" alt="Tottenham" width="" />
-        </div>
-        <div>
-          <p>
-            Welcome to the rivalry that is Aresnal FC vs Tottenham FC!! Test your
-            knowledge of the oldest derby in the World!!!
-          </p>
-        </div>
-        <div>
-          <button id="start-quiz">Start Quiz</button>
-        </div>
-      </section>
-      `
+function render() {
+  $("#start").hide();
+  $("#quiz").hide();
+  $("#feedback").hide();
+  $("#summary").hide();
+  $("header").hide();
+
+  if (!STORE.started) {
+    $("#start").show();
+  } else if (STORE.hasFeedback) {
+    renderHeader();
+    renderFeedback();
+  } else if (STORE.currentQuestion < STORE.questions.length) {
+    renderHeader();
+    renderQuestion();
+  } else {
+    renderSummary();
+  }
+}
+
+function renderHeader() {
+  $("header").show();
+  $("header .score").text(`Score: ${STORE.score}`);
+  $("header .progress").text(
+    `Question ${STORE.currentQuestion + 1}/${STORE.questions.length}`
   );
 }
 
-function generateQuestion() {
-  console.log("`generateQuestion` ran")
-  let question = STORE.questions[STORE.currentQuestion];
+function renderQuestion() {
+  $("#quiz").show();
+  const question = STORE.questions[STORE.currentQuestion];
+  $("#quiz h2").text(question.question);
+  $("#choices").html("");
+  question.answers.forEach((answer, i) => {
+    $("#choices").append(`
+      <input type="radio" name="choice" value="${i}" id="${i}"/>
+      <label for="${i}">${answer}</label>
+    `);
+  });
+}
 
-  $("main").html(
-    `<section id="quiz">
-      <h2></h2>
-      <form>
-        <fieldset id="choices"></fieldset>
-        <input type="submit" value="Submit Answer" aria-label="Submit Answer" />
-      </form>
-    </section>
-    `
+function renderFeedback() {
+  $("#feedback").show();
+  $("#feedback h2").text(STORE.hasFeedback);
+  $(".user-answer").text("");
+  const question = STORE.questions[STORE.currentQuestion];
+  if (STORE.hasFeedback === "Incorrect") {
+    $(".user-answer").text(`You answered ${STORE.guess}`);
+  }
+  $(".correct-answer").text(
+    `The correct answer was ${question.answers[question.correct]}`
   );
-
-  /*$("main").html(
-    `
-      <div class ="data">
-      <div class="question">${questions.question}</div>
-      <form class="form">
-        <input type="radio" id="true" name="answers" value="${questions.question[0]}">
-        <label for="true">${questions.question[0]}</label><br>
-        <input type="radio" id="false" name="answers" value="${questions.question[1]}">
-        <label for="false">${questions.question[1]}</label><br>
-        <button type="submit" id="submit">Submit</button>
-      </form>
-    </div>
-  `
-  );*/
-}
-function generateEndPage() {
-  console.log("`generateEndPage` ran")
-  $('main').html(`<div class = "generateStartPage">
-  <h3>Thanks for taking the North London Derby Quiz</h3>
-  <p>Your final score was ${STORE.score}!</p>
-  <button class="restart">Try Again</button>
-  </div>`)
-
-  /*<section id="summary">
-  <h2>Summary</h2>
-  <p></p>
-  <button id="restart">Restart Quiz</button>
-</section>*/
-
 }
 
-function SubmitAnswer(action) {
-  action.preventDefault();
-  let answer = $("input[name=answers]:checked").val();
-  if (STORE.questions[STORE.currentQuestion].correctAnswer == answer) {
-    alert("you are right!");
-    let correctDiv = $(`<div class="correct">You are correct!</div>`);
-    STORE.score++
-  } else {
-    let wrongDiv = $(`<div class="wrong">You are wrong!</div>`);
-    alert("You are wrong!")
-  }
-  STORE.currentQuestion++;
-  if (STORE.currentQuestion === STORE.questions.length) {
-    alert("Quiz over!");
-    endQuizPage();
-  } else {
-    generateQuestion();
-  }
-
-  /* <section id="feedback">
-  <h2></h2>
-  <p class="user-answer"></p>
-  <p class="correct-answer"></p>
-  <button id="next">Next Question</button>
-</section> */
-
+function renderSummary() {
+  $("#summary").show();
+  $("#summary p").text(
+    `You scored ${STORE.score} out of ${STORE.questions.length}`
+  );
 }
 
-
-
-/********** RENDER FUNCTION(S) **********/
-
-// This function conditionally replaces the contents of the <main> tag based on the state of the store
-
-/********** EVENT HANDLER FUNCTIONS **********/
-
-// These functions handle events (submit, click, etc)
-
-//function handleClickStartQuiz() {
-//  console.log("`handleSubmitQuestion` ran");
-
-function handleQuestionCounter() {
-  console.log("`generateQuestionCounter` ran");
-}
-function handleSubmitAnswer() {
-  console.log("`handleSubmitQuestion` ran");
-  /*alert("completed");
-  generateQuestion();*/
+function startQuiz() {
+  $("#start-quiz").click((e) => {
+    STORE.started = true;
+    render();
+  });
 }
 
-function handleFinalScore() {
-  console.log("`handleFinalScore` ran");
-
+function submitChoice() {
+  $("#quiz form").submit((e) => {
+    e.preventDefault();
+    const answer = $('input[type="radio"]:checked').val();
+    const question = STORE.questions[STORE.currentQuestion];
+    if (Number(answer) === question.correct) {
+      STORE.score++;
+      STORE.hasFeedback = "Correct";
+    } else {
+      STORE.guess = STORE.questions[STORE.currentQuestion].answers[answer];
+      STORE.hasFeedback = "Incorrect";
+    }
+    render();
+  });
 }
-function handleEndQuiz() {
-  console.log("`handleSubmitQuiz` ran");
+
+function nextQuestion() {
+  $("#next").click((e) => {
+    STORE.hasFeedback = false;
+    STORE.currentQuestion = STORE.currentQuestion + 1;
+    render();
+  });
 }
 
-//event listeners
-
-$('main').on('click', '.startQuiz', function () {
-  renderList();
-});
-
-$('main').on('submit', '.form', handleSubmitAnswer);
-
+function restartQuiz() {
+  $("#restart").click((e) => {
+    STORE.started = false;
+    STORE.score = 0;
+    STORE.currentQuestion = 0;
+    render();
+  });
+}
 
 function main() {
-  generateStartPage();
-  generateQuestion();
-  generateEndPage();
-  handleQuestionCounter();
-  handleSubmitAnswer();
-  handleFinalScore();
-  handleEndQuiz();
-  console.log('`main` ran');
-  //generateStartPage();
+  startQuiz();
+  submitChoice();
+  nextQuestion();
+  restartQuiz();
+  render();
 }
 
 $(main);

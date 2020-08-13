@@ -3,27 +3,49 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Quiz App</title>
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"
-      rel="stylesheet"
-      type="text/css"
-    />
+    <title>NLD</title>
     <link href="app.css" rel="stylesheet" type="text/css" />
   </head>
-
   <body>
     <header>
-      <h1>North London Derby Quiz</h1>
+      <h1></h1>
+      <p class="score">Score:</p>
+      <p class="progress">0/0</p>
     </header>
 
-    <main></main>
+    <section id="start">
+      <h2>North London Derby</h2>
+      <p>
+        Welcome to the rivalry that is Arsenal FC vs Tottenham FC!! Test your
+        knowledge of the oldest derby in the World!!!
+      </p>
+      <button id="start-quiz">Start</button>
+    </section>
+
+    <section id="quiz">
+      <h2></h2>
+      <form>
+        <fieldset id="choices"></fieldset>
+        <input type="submit" value="Submit Answer" aria-label="Submit Answer" />
+      </form>
+    </section>
+
+    <section id="feedback">
+      <h2></h2>
+      <p class="user-answer"></p>
+      <p class="correct-answer"></p>
+      <button id="next">Next Question</button>
+    </section>
+
+    <section id="summary">
+      <h2>Summary</h2>
+      <p></p>
+      <button id="restart">Restart Quiz</button>
+    </section>
     <script
       src="https://code.jquery.com/jquery-3.4.1.slim.js"
       crossorigin="anonymous"
     ></script>
-    <script src="store.js"></script>
     <script src="app.js"></script>
   </body>
 </html>

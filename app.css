@@ -8,3 +8,7 @@
 */
 
 /* --- Responsive Layout --- */
+
+CSS section {
+  display: none;
+}
