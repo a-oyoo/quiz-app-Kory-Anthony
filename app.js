@@ -80,6 +80,7 @@
 
 function generateStartPage() {
   console.log("`generateStartPage` ran");
+  $("h1").text("North London Derby Quiz");
   return 
     `<section id="startPage">
       <div class = "generateStartPage">
@@ -108,21 +109,24 @@ function generateQuestion() {
   let question = STORE.questions[STORE.currentQuestion];
 
   return
+ 
     `
     <section id="quiz">
       <div class="questionBox">
         <div class="question">${question.name}</div>
         <form class="form">
-          <input type="radio" id="true" name="answers" value="${question.answers[0]}">
-          <label for="true">${question.answers[0]}</label><br>
-          <input type="radio" id="false" name="answers" value="${question.answers[1]}">
-          <label for="false">${question.answers[1]}</label><br>
+        <input type="radio" id="true" name="answers" value="${question.answers[0]}">
+        <label for="true">${question.answers[0]}</label><br>
+        <input type="radio" id="false" name="answers" value="${question.answers[1]}">
+        <label for="false">${question.answers[1]}</label><br>
           <button type="submit" id="submit">Submit</button>
         </form>    
       </div>
     </section>
     `;
 }
+
+
 
 // user asked one question after another
 function renderQuestions() {
@@ -202,17 +206,18 @@ $('main').on('click', '.startQuiz', function () {
 $('main').on('submit', '.form', handleSubmitAnswer);
 
 
+
+
 function main() {
   console.log("`main` ran");
   let startPage = generateStartPage();
-  $("main").html(startPage);
-  generateStartPage();
-  generateQuestion();
-  generateEndPage();
-  handleQuestionCounter();
-  handleSubmitAnswer();
-  handleFinalScore();
-  handleEndQuiz();
+  
+  //let question = generateQuestion();
+  //let endPage = generateEndPage();
+  //let questionCounter = handleQuestionCounter();
+  
+  $("#main").add($(startPage));
+  
 }
 
 //when the page loads call this function
