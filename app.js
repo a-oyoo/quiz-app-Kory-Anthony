@@ -81,8 +81,9 @@
 function generateStartPage() {
   console.log("`generateStartPage` ran");
   $("h1").text("North London Derby Quiz");
-  return 
-    `<section id="startPage">
+
+  return `
+    <section id="startPage">
       <div class = "generateStartPage">
       <h2>North London Derby Quiz</h2>
         <img src="images/arsenal-fc.jpeg" alt="Arsenal" width="150" />
@@ -108,9 +109,7 @@ function generateQuestion() {
   console.log("`generateQuestion` ran");
   let question = STORE.questions[STORE.currentQuestion];
 
-  return
- 
-    `
+  return `
     <section id="quiz">
       <div class="questionBox">
         <div class="question">${question.name}</div>
@@ -138,32 +137,32 @@ function renderQuestions() {
 // user submits answer: receives textual feedback - if wrong, correct displayed
 // user submits answer: move onto next question or other element 
 
-function handleSubmitAnswer() {
-  event.preventDefault();
-  let answer = $("input[name=answers]:checked").val();
-  console.log("`handleSubmitAnswer` ran");
-  renderQuestions();
-  if (STORE.questions[STORE.currentQuestion].correct === answer) {
-    alert("you are right!");
-    let correctDiv = $(`<div class="correct">You are correct!</div>`);
-    STORE.score++
-  } else {
-    let wrongDiv = $(`<div class="wrong">You are wrong!</div>`);
-    alert("You are wrong!")
-  }
-  STORE.currentQuestion++;
-  if (STORE.currentQuestion === STORE.questions.length) {
-    alert("Quiz over!");
-    generateEndPage();
-  } else {
-    generateQuestion();  
-  }
-}
+// function handleSubmitAnswer() {
+//   event.preventDefault();
+//   let answer = $("input[name=answers]:checked").val();
+//   console.log("`handleSubmitAnswer` ran");
+//   renderQuestions();
+//   if (STORE.questions[STORE.currentQuestion].correct === answer) {
+//     alert("you are right!");
+//     let correctDiv = $(`<div class="correct">You are correct!</div>`);
+//     STORE.score++
+//   } else {
+//     let wrongDiv = $(`<div class="wrong">You are wrong!</div>`);
+//     alert("You are wrong!")
+//   }
+//   STORE.currentQuestion++;
+//   if (STORE.currentQuestion === STORE.questions.length) {
+//     alert("Quiz over!");
+//     generateEndPage();
+//   } else {
+//     generateQuestion();  
+//   }
+// }
 
-function generateEndPage() {
-  console.log("`generateEndPage` ran")
+// function generateEndPage() {
+//   console.log("`generateEndPage` ran")
   
-}
+// }
 
 
 
@@ -178,22 +177,22 @@ function generateEndPage() {
 //function handleClickStartQuiz() {
 //  console.log("`handleSubmitQuestion` ran");
 
-function handleQuestionCounter() {
-  console.log("`generateQuestionCounter` ran");
-}
-function handleSubmitAnswer() {
-  console.log("`handleSubmitAnswer` ran");
-  /*alert("completed");
-  generateQuestion();*/
-}
+// function handleQuestionCounter() {
+//   console.log("`generateQuestionCounter` ran");
+// }
+// function handleSubmitAnswer() {
+//   console.log("`handleSubmitAnswer` ran");
+//   /*alert("completed");
+//   generateQuestion();*/
+// }
 
-function handleFinalScore() {
-  console.log("`handleFinalScore` ran");
+// function handleFinalScore() {
+//   console.log("`handleFinalScore` ran");
 
-}
-function handleEndQuiz() {
-  console.log("`handleSubmitQuiz` ran");
-}
+// }
+// function handleEndQuiz() {
+//   console.log("`handleSubmitQuiz` ran");
+// }
 
 //event listeners
 
