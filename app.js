@@ -80,11 +80,10 @@
 
 function generateStartPage() {
   console.log("`generateStartPage` ran");
-  $("h1").text("North London Derby Quiz");
 
-  return `
-    <section id="startPage">
-      <div class = "generateStartPage">
+  $("main").text("North London Derby Quiz");
+
+  return `<div class = "generateStartPage">
       <h2>North London Derby Quiz</h2>
         <img src="images/arsenal-fc.jpeg" alt="Arsenal" width="150" />
         <img src="images/tottenham-fc.jpg" alt="Tottenham" width="" />
@@ -98,9 +97,9 @@ function generateStartPage() {
         <div>
           <button class="start-quiz">Start Quiz</button>
         </div>
-      </section>
+      
     `
-  ;
+    ;
 }
 
 // user prompted with atleast 5 multiple choice questions
@@ -109,9 +108,7 @@ function generateQuestion() {
   console.log("`generateQuestion` ran");
   let question = STORE.questions[STORE.currentQuestion];
 
-  return `
-    <section id="quiz">
-      <div class="questionBox">
+  return `<div class="questionBox">
         <div class="question">${question.name}</div>
         <form class="form">
         <input type="radio" id="true" name="answers" value="${question.answers[0]}">
@@ -121,7 +118,7 @@ function generateQuestion() {
           <button type="submit" id="submit">Submit</button>
         </form>    
       </div>
-    </section>
+    
     `;
 }
 
@@ -161,7 +158,7 @@ function renderQuestions() {
 
 // function generateEndPage() {
 //   console.log("`generateEndPage` ran")
-  
+
 // }
 
 
@@ -197,12 +194,12 @@ function renderQuestions() {
 //event listeners
 
 //startQuiz event listener
-$('main').on('click', '.startQuiz', function () {
-  generateQuestion();
-});
+// $('main').on('click', '.startQuiz', function () {
+//   generateQuestion();
+// });
 
 // submit Answer event listener
-$('main').on('submit', '.form', handleSubmitAnswer);
+// $('main').on('submit', '.form', handleSubmitAnswer);
 
 
 
@@ -210,13 +207,13 @@ $('main').on('submit', '.form', handleSubmitAnswer);
 function main() {
   console.log("`main` ran");
   let startPage = generateStartPage();
-  
+
   //let question = generateQuestion();
   //let endPage = generateEndPage();
   //let questionCounter = handleQuestionCounter();
-  
-  $("#main").add($(startPage));
-  
+
+  $("main").html(startPage);
+
 }
 
 //when the page loads call this function
