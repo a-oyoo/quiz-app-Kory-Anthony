@@ -76,60 +76,134 @@
 
 // These functions return HTML templates
 
-// user can click button to start quiz
+
 
 function generateStartPage() {
   console.log("`generateStartPage` ran");
 
-  $("main").text("North London Derby Quiz");
-
-  return `<div class = "generateStartPage">
+  return `
+  <section id="start">
+    <div class="generateStartPage">
       <h2>North London Derby Quiz</h2>
-        <img src="images/arsenal-fc.jpeg" alt="Arsenal" width="150" />
-        <img src="images/tottenham-fc.jpg" alt="Tottenham" width="" />
-        </div>
-        <div>
-          <p>
-            Welcome to the rivalry that is Arsenal FC vs Tottenham FC!! Test your
-            knowledge of the oldest derby in the World!!!
-          </p>
-        </div>
-        <div>
-          <button class="start-quiz">Start Quiz</button>
-        </div>
-      
-    `
-    ;
-}
-
-// user prompted with atleast 5 multiple choice questions
-let counter = 0;
-function generateQuestion() {
-  console.log("`generateQuestion` ran");
-  let question = STORE.questions[STORE.currentQuestion];
-
-  return `<div class="questionBox">
-        <div class="question">${question.name}</div>
-        <form class="form">
-        <input type="radio" id="true" name="answers" value="${question.answers[0]}">
-        <label for="true">${question.answers[0]}</label><br>
-        <input type="radio" id="false" name="answers" value="${question.answers[1]}">
-        <label for="false">${question.answers[1]}</label><br>
-          <button type="submit" id="submit">Submit</button>
-        </form>    
-      </div>
-    
+      <img src="images/arsenal-fc.jpeg" alt="Arsenal" width="150" />
+      <img src="images/tottenham-fc.jpg" alt="Tottenham" width="" />
+    </div>
+    <div>
+      <p>
+        Welcome to the rivalry that is Arsenal FC vs Tottenham FC!! Test your
+        knowledge of the oldest derby in the World!!!
+      </p>
+    </div>
+    <div>
+      <button class="start-quiz">Start Quiz</button>
+    </div>
+  </section>     
     `;
 }
 
 
 
-// user asked one question after another
-function renderQuestions() {
-  let html = generateQuestion();
-  console.log(html);
-  $("main").html(html);
+// // user prompted with atleast 5 multiple choice questions
+function generateQuestions() {
+  console.log("`generateQuestions` ran");
+
+  return `
+    <header>
+      <h1></h1>
+      <p class="score">Score:</p>
+      <p class="progress">0/0</p>
+    </header>
+    <section id="quiz">
+      <h2></h2>
+      <form>
+        <fieldset id="choices"></fieldset>
+        <input type="submit" value="Submit Answer" aria-label="Submit Answer" />
+      </form>
+    </section> 
+    `;
 }
+
+function generateFeedback() {
+  console.log("'generateFeedback' ran");
+
+  return `
+  <section id="feedback">
+    <h2></h2>
+    <p class="user-answer"></p>
+    <p class="correct-answer"></p>
+    <button id="next">Next Question</button>
+  </section>
+  `;
+
+}
+
+function generateSummary() {
+  return `
+  <section id="summary">
+    <h2>Summary</h2>
+    <p></p>
+    <button id="restart">Restart Quiz</button>
+  </section>
+  `;
+}
+
+function renderStartPage() {
+  let startPage = generateStartPage();
+  $("main").html(startPage);
+}
+
+function renderQuestions() {
+  let questionsPage = generateQuestions();
+  $("main").html(questionsPage);
+}
+
+function render() {
+  $("#start").hide();
+  $("#quiz").hide();
+  $("#feedback").hide();
+  $("#summary").hide();
+  $("header").hide();
+
+  if (!STORE.started) {
+    $("#start").show();
+  } else if (STORE.giveFeedback) {
+    headerFunc();
+    response();
+  } else if (STORE.currentQuestion < STORE.questions.length) {
+    headerFunc();
+    question();
+  } else {
+    finalPage();
+  }
+}
+
+function headerFunc() {
+  $("header").show();
+  $("header .score").text(`Score: ${STORE.score}`);
+  $("header .progress").text(
+    `Question ${STORE.currentQuestion + 1}/${STORE.questions.length}`
+  );
+}
+// user can click button to start quiz
+
+function startQuiz() {
+  console.log("'startQuiz'ran")
+  renderStartPage();
+  $("#start-quiz").click((e) => {
+    STORE.started = true;
+    renderQuestions();
+  });
+}
+
+
+
+
+// // user asked one question after another
+// function renderQuestions() {
+//   let html = generateQuestion();
+//   console.log(html);
+//   $("main").html(html);
+// }
 
 // user submits answer: receives textual feedback - if wrong, correct displayed
 // user submits answer: move onto next question or other element 
@@ -206,13 +280,14 @@ function renderQuestions() {
 
 function main() {
   console.log("`main` ran");
-  let startPage = generateStartPage();
+  startQuiz();
+
 
   //let question = generateQuestion();
   //let endPage = generateEndPage();
   //let questionCounter = handleQuestionCounter();
 
-  $("main").html(startPage);
+
 
 }
 
