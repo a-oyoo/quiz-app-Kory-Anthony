@@ -1,7 +1,7 @@
 /**
  * Example store structure
  */
-'use strict';
+"use strict";
 
 /** const store = {
   // 5 or more questions are required
@@ -68,152 +68,184 @@
  * 
  */
 
-
 /* ******* Function stubs *******/
 
 /********** TEMPLATE GENERATION FUNCTIONS **********/
 
-
 // These functions return HTML templates
 
-// user can click button to start quiz
+import STORE from './store.js';
+
 
 function generateStartPage() {
   console.log("`generateStartPage` ran");
-  return 
-    `<section id="startPage">
-      <div class = "generateStartPage">
+
+  return `
+  <section id="start">
+    <div class="generateStartPage">
       <h2>North London Derby Quiz</h2>
-        <img src="images/arsenal-fc.jpeg" alt="Arsenal" width="150" />
-        <img src="images/tottenham-fc.jpg" alt="Tottenham" width="" />
-        </div>
-        <div>
-          <p>
-            Welcome to the rivalry that is Arsenal FC vs Tottenham FC!! Test your
-            knowledge of the oldest derby in the World!!!
-          </p>
-        </div>
-        <div>
-          <button class="start-quiz">Start Quiz</button>
-        </div>
-      </section>
-    `
-  ;
-}
-
-// user prompted with atleast 5 multiple choice questions
-let counter = 0;
-function generateQuestion() {
-  console.log("`generateQuestion` ran");
-  let question = STORE.questions[STORE.currentQuestion];
-
-  return
-    `
-    <section id="quiz">
-      <div class="questionBox">
-        <div class="question">${question.name}</div>
-        <form class="form">
-          <input type="radio" id="true" name="answers" value="${question.answers[0]}">
-          <label for="true">${question.answers[0]}</label><br>
-          <input type="radio" id="false" name="answers" value="${question.answers[1]}">
-          <label for="false">${question.answers[1]}</label><br>
-          <button type="submit" id="submit">Submit</button>
-        </form>    
-      </div>
-    </section>
+      <img src="images/arsenal-fc.jpeg" alt="Arsenal" width="150" />
+      <img src="images/tottenham-fc.jpg" alt="Tottenham" width="" />
+    </div>
+    <div>
+      <p>
+        Welcome to the rivalry that is Arsenal FC vs Tottenham FC!! Test your
+        knowledge of the oldest derby in the World!!!
+      </p>
+    </div>
+    <div>
+      <button class="start-quiz">Start Quiz</button>
+    </div>
+  </section>     
     `;
 }
 
-// user asked one question after another
-function renderQuestions() {
-  let html = generateQuestion();
-  console.log(html);
-  $("main").html(html);
+// // user prompted with atleast 5 multiple choice questions
+function generateQuestions() {
+  console.log("`generateQuestions` ran");
+
+  return `
+    <section id="ScoreAndProgress">
+      <h1></h1>
+      <p class="score">Score:</p>
+      <p class="progress">0/0</p>
+    </section>
+    <section id="quiz">
+      <h2></h2>
+      <form>
+        <fieldset id="choices"></fieldset>
+        <input type="submit" value="Submit Answer" aria-label="Submit Answer" />
+      </form>
+    </section> 
+    `;
 }
 
-// user submits answer: receives textual feedback - if wrong, correct displayed
-// user submits answer: move onto next question or other element 
+function generateFeedback() {
+  console.log("'generateFeedback' ran");
 
-function handleSubmitAnswer() {
-  event.preventDefault();
-  let answer = $("input[name=answers]:checked").val();
-  console.log("`handleSubmitAnswer` ran");
-  renderQuestions();
-  if (STORE.questions[STORE.currentQuestion].correct === answer) {
-    alert("you are right!");
-    let correctDiv = $(`<div class="correct">You are correct!</div>`);
-    STORE.score++
+  return `
+  <section id="feedback">
+    <h2></h2>
+    <p class="user-answer"></p>
+    <p class="correct-answer"></p>
+    <button id="next">Next Question</button>
+  </section>
+  `;
+
+}
+
+function generateSummary() {
+  return `
+  <section id="summary">
+    <h2>Summary</h2>
+    <p></p>
+    <button id="restart">Restart Quiz</button>
+  </section>
+  `;
+}
+
+
+function render() {
+
+  if (!STORE.started) {
+    $("main").html(generateStartPage);
+  } else if (STORE.giveFeedback) {
+    $("main").html(generateFeedback);
+    headerFunc();
+    response();
+  } else if (STORE.currentQuestion < STORE.questions.length) {
+    $("main").html(generateQuestions);
+    headerFunc();
+    question();
   } else {
-    let wrongDiv = $(`<div class="wrong">You are wrong!</div>`);
-    alert("You are wrong!")
-  }
-  STORE.currentQuestion++;
-  if (STORE.currentQuestion === STORE.questions.length) {
-    alert("Quiz over!");
-    generateEndPage();
-  } else {
-    generateQuestion();  
+    $("main").html(generateSummary);
+    finalPage();
   }
 }
 
-function generateEndPage() {
-  console.log("`generateEndPage` ran")
-  
+function headerFunc() {
+  $("#ScoreAndProgress .score").text(`Score: ${STORE.score}`);
+  $("#ScoreAndProgress .progress").text(
+    `Question ${STORE.currentQuestion + 1}/${STORE.questions.length}`
+  );
 }
 
-
-
-/********** RENDER FUNCTION(S) **********/
-
-// This function conditionally replaces the contents of the <main> tag based on the state of the store
-
-/********** EVENT HANDLER FUNCTIONS **********/
-
-// These functions handle events (submit, click, etc)
-
-//function handleClickStartQuiz() {
-//  console.log("`handleSubmitQuestion` ran");
-
-function handleQuestionCounter() {
-  console.log("`generateQuestionCounter` ran");
-}
-function handleSubmitAnswer() {
-  console.log("`handleSubmitAnswer` ran");
-  /*alert("completed");
-  generateQuestion();*/
+function question() {
+  const question = STORE.questions[STORE.currentQuestion];
+  $("#quiz h2").text(question.question);
+  $("#choices").html("");
+  question.answers.forEach((answer, i) => {
+    $("#choices").append(`
+      <input type="radio" name="choice" value="${i}" id="${i}"/>
+      <label for="${i}">${answer}</label>
+    `);
+  });
 }
 
-function handleFinalScore() {
-  console.log("`handleFinalScore` ran");
-
+function response() {
+  $("#feedback h2").text(STORE.giveFeedback);
+  $(".user-answer").text("");
+  const question = STORE.questions[STORE.currentQuestion];
+  if (STORE.giveFeedback === "Incorrect") {
+    $(".user-answer").text(`You answered ${STORE.selection}`);
+  }
+  $(".correct-answer").text(
+    `The correct answer was ${question.answers[question.correct]}`
+  );
 }
-function handleEndQuiz() {
-  console.log("`handleSubmitQuiz` ran");
+
+function finalPage() {
+  $("#summary p").text(
+    `You scored ${STORE.score} out of ${STORE.questions.length}`
+  );
 }
 
-//event listeners
+function startQuiz() {
+  $("main").on("click", "#start", (e) => {
+    STORE.started = true;
+    render();
+  });
+}
 
-//startQuiz event listener
-$('main').on('click', '.startQuiz', function () {
-  generateQuestion();
-});
+function submitResponse() {
+  $("main").on("click", "form", (e) => {
+    e.preventDefault();
+    const answer = $('input[type="radio"]:checked').val();
+    const question = STORE.questions[STORE.currentQuestion];
+    if (Number(answer) === question.correct) {
+      STORE.score++;
+      STORE.giveFeedback = "Correct";
+    } else {
+      STORE.selection = question.answers[answer];
+      STORE.giveFeedback = "Incorrect";
+    }
+    render();
+  });
+}
 
-// submit Answer event listener
-$('main').on('submit', '.form', handleSubmitAnswer);
+function nextQuestion() {
+  $("main").on("click", "#next", (e) => {
+    STORE.giveFeedback = false;
+    STORE.currentQuestion = STORE.currentQuestion + 1;
+    render();
+  });
+}
 
+function restart() {
+  $("main").on("click", "#restart", (e) => {
+    STORE.started = false;
+    STORE.score = 0;
+    STORE.currentQuestion = 0;
+    render();
+  });
+}
 
 function main() {
-  console.log("`main` ran");
-  let startPage = generateStartPage();
-  $("main").html(startPage);
-  generateStartPage();
-  generateQuestion();
-  generateEndPage();
-  handleQuestionCounter();
-  handleSubmitAnswer();
-  handleFinalScore();
-  handleEndQuiz();
+  startQuiz();
+  submitResponse();
+  nextQuestion();
+  restart();
+  render();
 }
 
-//when the page loads call this function
 $(main);
