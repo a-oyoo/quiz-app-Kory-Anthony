@@ -3,7 +3,7 @@
 const STORE = {
   questions: [
     {
-      question: "what is Arsenal FC's nickname?",
+      question: "What is Arsenal FC's nickname?",
       answers: ["The Shooters", "The Hammers", "The Gunners", "The Reds"],
       correct: 2,
     },

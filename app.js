@@ -106,7 +106,6 @@ function generateQuestions() {
 
   return `
     <section id="ScoreAndProgress">
-      <h1></h1>
       <p class="score">Score:</p>
       <p class="progress">0/0</p>
     </section>
@@ -125,7 +124,6 @@ function generateFeedback() {
 
   return `
   <section id="feedback">
-    <h2></h2>
     <p class="user-answer"></p>
     <p class="correct-answer"></p>
     <button id="next">Next Question</button>
@@ -138,7 +136,6 @@ function generateSummary() {
   return `
   <section id="summary">
     <h2>Summary</h2>
-    <p></p>
     <button id="restart">Restart Quiz</button>
   </section>
   `;
@@ -208,7 +205,7 @@ function startQuiz() {
 }
 
 function submitResponse() {
-  $("main").on("click", "form", (e) => {
+  $("main").on("click", "form", "submit", (e) => {
     e.preventDefault();
     const answer = $('input[type="radio"]:checked').val();
     const question = STORE.questions[STORE.currentQuestion];
