@@ -78,14 +78,13 @@ import STORE from './store.js';
 
 
 function generateStartPage() {
-  console.log("`generateStartPage` ran");
 
   return `
   <section id="start">
     <div class="generateStartPage">
       <h2>North London Derby Quiz</h2>
-      <img src="images/arsenal-fc.jpeg" alt="Arsenal" width="150" />
-      <img src="images/tottenham-fc.jpg" alt="Tottenham" width="" />
+      <img src="images/arsenal-fc.jpeg" alt="Arsenal FC club logo" width="150" />
+      <img src="images/tottenham-fc.jpg" alt="Tottenham FC club logo" width="" />
     </div>
     <div>
       <p>
@@ -150,13 +149,15 @@ function render() {
     $("main").html(generateFeedback);
     headerFunc();
     response();
+    $("button").focus()
   } else if (STORE.currentQuestion < STORE.questions.length) {
     $("main").html(generateQuestions);
     headerFunc();
     question();
+    $("input[type='radio']").first().focus()
   } else {
     $("main").html(generateSummary);
-    finalPage();
+    finalPage()
   }
 }
 
@@ -173,8 +174,8 @@ function question() {
   $("#choices").html("");
   question.answers.forEach((answer, i) => {
     $("#choices").append(`
-      <input type="radio" name="choice" value="${i}" id="${i}"/>
-      <label for="${i}">${answer}</label>
+      
+      <label class="d-block "for="${i}"><input type="radio" name="choice" value="${i}" id="${i}"/>${answer}</label>
     `);
   });
 }
@@ -193,7 +194,7 @@ function response() {
 
 function finalPage() {
   $("#summary p").text(
-    `You scored ${STORE.score} out of ${STORE.questions.length}`
+    `You scored ${STORE.score} out of ${STORE.questions.length}` 
   );
 }
 
@@ -205,9 +206,12 @@ function startQuiz() {
 }
 
 function submitResponse() {
-  $("main").on("click", "form", "submit", (e) => {
+  $("main").on("submit", "form", (e) => {
     e.preventDefault();
     const answer = $('input[type="radio"]:checked').val();
+    if (!answer) {
+      return
+    }
     const question = STORE.questions[STORE.currentQuestion];
     if (Number(answer) === question.correct) {
       STORE.score++;
@@ -241,6 +245,7 @@ function main() {
   startQuiz();
   submitResponse();
   nextQuestion();
+  finalPage();
   restart();
   render();
 }
