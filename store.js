@@ -53,7 +53,4 @@ const STORE = {
             correct: 0
         },
     ],
-    quizStarted: false,
-    questionNumber: 0,
-    score: 0
 };
