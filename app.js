@@ -135,6 +135,7 @@ function generateSummary() {
   return `
   <section id="summary">
     <h2>Summary</h2>
+    <p>You scored ${STORE.score} out of ${STORE.questions.length}</p>
     <button id="restart">Restart Quiz</button>
   </section>
   `;
@@ -157,7 +158,6 @@ function render() {
     $("input[type='radio']").first().focus()
   } else {
     $("main").html(generateSummary);
-    finalPage()
   }
 }
 
@@ -189,12 +189,6 @@ function response() {
   }
   $(".correct-answer").text(
     `The correct answer was ${question.answers[question.correct]}`
-  );
-}
-
-function finalPage() {
-  $("#summary p").text(
-    `You scored ${STORE.score} out of ${STORE.questions.length}` 
   );
 }
 
@@ -245,7 +239,6 @@ function main() {
   startQuiz();
   submitResponse();
   nextQuestion();
-  finalPage();
   restart();
   render();
 }
